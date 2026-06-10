@@ -95,6 +95,17 @@
       color: var(--muted);
       line-height: 1.45;
     }
+    .notice {
+      margin: 12px 0 20px;
+      padding: 12px 14px;
+      border: 1px solid #ead7a7;
+      border-left: 4px solid #c5891f;
+      border-radius: 8px;
+      background: #fff8e6;
+      color: #5c4519;
+      font-size: 14px;
+      line-height: 1.45;
+    }
     .kpis {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -236,9 +247,12 @@
 <body>
   <header>
     <h1>Last minute ceny: júl 2025 vs referenčná dovolenka 2026</h1>
-    <div class="subtitle">Interaktívne porovnanie historických archívnych cien z Dovolenka.SME.sk. Prísny filter 4*+, AI/UAI, hotelová pláž a bazén sa z archívnych kariet nepodarilo kompletne potvrdiť, preto dashboard oddeľuje destinácie, hotelové karty pri pláži a referenciu 2026.</div>
+    <div class="subtitle">Interaktívne porovnanie historických archívnych cien z Dovolenka.SME.sk. Prísny filter 4*+, AI/UAI, hotelová pláž a bazén sa z archívnych kariet nepodarilo kompletne potvrdiť, preto dashboard oddeľuje destinácie, neoverené hotelové karty pri pláži a referenciu 2026.</div>
   </header>
   <main>
+    <div class="notice">
+      Dôležité: hotelové riadky nižšie nie sú all-inclusive ceny. Archívne karty pri hoteloch uvádzali najlacnejší zachytený variant, často „Bez stravy“ alebo „Raňajky“. Použi ich iba ako orientačné minimum hotelov pri pláži; s referenciou 2026 ich neporovnávaj ako rovnocenné AI/UAI zájazdy.
+    </div>
     <section class="kpis">
       <div class="kpi"><div class="value" id="kpiDestinations"></div><div class="label">destinácií v archívnom porovnaní</div></div>
       <div class="kpi"><div class="value" id="kpiHotels"></div><div class="label">extrahovaných hotelových kariet</div></div>
@@ -297,8 +311,8 @@
 
     <section class="split">
       <div class="panel">
-        <h2>Hotelové karty</h2>
-        <p>Filtrované podľa ovládacích prvkov vyššie. Kliknutím na hlavičku zoradíš tabuľku.</p>
+        <h2>Hotelové karty bez overenej AI/UAI ceny</h2>
+        <p>Filtrované podľa ovládacích prvkov vyššie. Stĺpec Strava ukazuje, že tieto riadky nie sú all-inclusive varianty.</p>
         <div id="hotelTable"></div>
       </div>
       <div class="panel">
@@ -362,8 +376,8 @@
       }
 
       if (view === "beach") {
-        title.textContent = "Hotelové karty 4*+ s plážou 0 m";
-        subtitle.textContent = "Tieto riadky nemajú v archívnej karte potvrdené AI/UAI ani bazén.";
+        title.textContent = "Hotelové karty 4*+ pri pláži, bez AI/UAI ceny";
+        subtitle.textContent = "Graf ukazuje lacné zachytené hotelové varianty. Nie sú to ceny s All inclusive/Ultra all inclusive.";
         const rows = filteredHotels().filter(h => h.isBeach4Star);
         const max = Math.max(reference.price, ...rows.map(h => h.price), 1);
         if (!rows.length) chart.innerHTML = '<div class="empty">Pre aktuálne filtre nie sú dostupné hotelové karty.</div>';
