@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(".")
 DESTINATION_CSV = ROOT / "dovolenka_jul_2025_destination_prices.csv"
 HOTEL_CSV = ROOT / "dovolenka_jul_2025_hotel_candidates.csv"
+AI_CSV = ROOT / "historical_all_inclusive_packages_july_2025.csv"
 OUT_HTML = ROOT / "dovolenka_jul_2025_dashboard.html"
 
 
@@ -82,7 +83,54 @@ def prepare_hotels(rows):
     return sorted(result, key=lambda item: item["price"])
 
 
-def build_html(destination_summary, hotel_rows):
+def prepare_ai_packages(rows):
+    result = []
+    for row in rows:
+        price = as_int(row["price_per_person_eur"])
+        nights = as_int(row["nights"])
+        if price is None or nights is None:
+            continue
+        result.append(
+            {
+                "source": row["source"],
+                "date": row["snapshot_date"],
+                "destination": row["destination"],
+                "region": row["region"],
+                "hotel": row["hotel"],
+                "checkIn": row["check_in"],
+                "checkOut": row["check_out"],
+                "nights": nights,
+                "meal": row["meal"],
+                "stars": row["stars"],
+                "transport": row["transport"],
+                "price": price,
+                "perNight": round(price / nights, 2) if nights else None,
+                "confidence": row["confidence"],
+                "archive": row["archive_url"],
+            }
+        )
+    return sorted(result, key=lambda item: item["price"])
+
+
+def summarize_ai_packages(rows):
+    grouped = defaultdict(list)
+    for row in rows:
+        grouped[row["destination"]].append(row["price"])
+    result = []
+    for destination, prices in grouped.items():
+        result.append(
+            {
+                "destination": destination,
+                "count": len(prices),
+                "min": min(prices),
+                "median": median(prices),
+                "max": max(prices),
+            }
+        )
+    return sorted(result, key=lambda item: item["median"])
+
+
+def build_html(destination_summary, hotel_rows, ai_packages, ai_summary):
     reference = {
         "label": "Júl 2026 referencia",
         "price": 1600,
@@ -101,6 +149,8 @@ def build_html(destination_summary, hotel_rows):
         "destinationCount": len(destination_summary),
         "hotelCount": len(hotel_rows),
         "beachHotelCount": len(beach_hotels),
+        "aiPackageCount": len(ai_packages),
+        "aiDestinationCount": len(ai_summary),
         "beachMin": min(beach_prices) if beach_prices else None,
         "beachMedian": median(beach_prices),
         "beachMax": max(beach_prices) if beach_prices else None,
@@ -216,7 +266,7 @@ def build_html(destination_summary, hotel_rows):
     }
     .kpis {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, minmax(140px, 1fr));
       gap: 12px;
       margin-bottom: 18px;
     }
@@ -365,6 +415,7 @@ def build_html(destination_summary, hotel_rows):
       <div class="kpi"><div class="value" id="kpiDestinations"></div><div class="label">destinácií v archívnom porovnaní</div></div>
       <div class="kpi"><div class="value" id="kpiHotels"></div><div class="label">extrahovaných hotelových kariet</div></div>
       <div class="kpi"><div class="value" id="kpiBeach"></div><div class="label">4*+ hotelových kariet s plážou 0 m</div></div>
+      <div class="kpi"><div class="value" id="kpiAi"></div><div class="label">AI/UAI balíkov z Invia/Fischer archívov</div></div>
       <div class="kpi"><div class="value">1 600 €</div><div class="label">referencia júl 2026, 5*, UAI, 7 nocí</div></div>
     </section>
 
@@ -373,6 +424,7 @@ def build_html(destination_summary, hotel_rows):
         <label for="viewSelect">Zobrazenie</label>
         <select id="viewSelect">
           <option value="destination">Destinácie 2025: medián ceny od</option>
+          <option value="ai">AI/UAI balíky 2025: cena za osobu</option>
           <option value="beach">Hotely 4*+ pri pláži 2025</option>
           <option value="comparison">Porovnanie s 2026 referenciou</option>
         </select>
@@ -382,8 +434,8 @@ def build_html(destination_summary, hotel_rows):
         <select id="destinationFilter"></select>
       </div>
       <div class="control">
-        <label for="maxPrice">Max cena hotela</label>
-        <input id="maxPrice" type="range" min="300" max="1900" value="1900" step="50">
+        <label for="maxPrice">Max cena</label>
+        <input id="maxPrice" type="range" min="300" max="2600" value="2600" step="50">
         <div class="small-note" id="maxPriceLabel"></div>
       </div>
       <div class="control">
@@ -419,6 +471,11 @@ def build_html(destination_summary, hotel_rows):
 
     <section class="split">
       <div class="panel">
+        <h2>Overené AI/UAI balíky z iných zdrojov</h2>
+        <p>Historické júlové 2025 letové balíky z Invia.sk a Fischer.sk archívov. Cena je za osobu, nie dnešná dostupnosť.</p>
+        <div id="aiTable"></div>
+      </div>
+      <div class="panel">
         <h2>Hotelové karty bez overenej AI/UAI ceny</h2>
         <p>Filtrované podľa ovládacích prvkov vyššie. Stĺpec Strava ukazuje, že tieto riadky nie sú all-inclusive varianty.</p>
         <div id="hotelTable"></div>
@@ -434,6 +491,8 @@ def build_html(destination_summary, hotel_rows):
   <script>
     const destinationSummary = __DESTINATION_JSON__;
     const hotels = __HOTEL_JSON__;
+    const aiPackages = __AI_JSON__;
+    const aiSummary = __AI_SUMMARY_JSON__;
     const reference = __REFERENCE_JSON__;
     const stats = __STATS_JSON__;
     let hotelSort = { key: "price", direction: "asc" };
@@ -445,7 +504,7 @@ def build_html(destination_summary, hotel_rows):
     }
 
     function uniqueDestinations() {
-      return [...new Set(hotels.map(h => h.destination))].sort();
+      return [...new Set([...hotels.map(h => h.destination), ...aiPackages.map(p => p.destination)])].sort();
     }
 
     function populateFilters() {
@@ -454,6 +513,7 @@ def build_html(destination_summary, hotel_rows):
       document.getElementById("kpiDestinations").textContent = stats.destinationCount;
       document.getElementById("kpiHotels").textContent = stats.hotelCount;
       document.getElementById("kpiBeach").textContent = stats.beachHotelCount;
+      document.getElementById("kpiAi").textContent = stats.aiPackageCount;
     }
 
     function filteredHotels() {
@@ -464,6 +524,18 @@ def build_html(destination_summary, hotel_rows):
         if (dest !== "all" && h.destination !== dest) return false;
         if (h.price > maxPrice) return false;
         if (term && !h.hotel.toLowerCase().includes(term)) return false;
+        return true;
+      });
+    }
+
+    function filteredAiPackages() {
+      const dest = document.getElementById("destinationFilter").value;
+      const maxPrice = Number(document.getElementById("maxPrice").value);
+      const term = document.getElementById("searchInput").value.trim().toLowerCase();
+      return aiPackages.filter(p => {
+        if (dest !== "all" && p.destination !== dest) return false;
+        if (p.price > maxPrice) return false;
+        if (term && !p.hotel.toLowerCase().includes(term)) return false;
         return true;
       });
     }
@@ -483,6 +555,16 @@ def build_html(destination_summary, hotel_rows):
         chart.appendChild(barRow(reference.label, reference.price, max, "bar ref", "vložený porovnávací bod"));
       }
 
+      if (view === "ai") {
+        title.textContent = "AI/UAI balíky: historická cena za osobu";
+        subtitle.textContent = "Invia.sk a Fischer.sk, archivované júlové záznamy s odchodom v júli 2025. Cena je za osobu.";
+        const rows = filteredAiPackages();
+        const max = Math.max(reference.price, ...rows.map(p => p.price), 1);
+        if (!rows.length) chart.innerHTML = '<div class="empty">Pre aktuálne filtre nie sú dostupné AI/UAI balíky.</div>';
+        rows.forEach(p => chart.appendChild(barRow(p.hotel, p.price, max, "bar", `${p.destination}, ${p.meal}, ${p.nights} nocí, ${p.source}`)));
+        chart.appendChild(barRow(reference.label, reference.price, max, "bar ref", "5*, UAI, 7 nocí, pláž do 200 m"));
+      }
+
       if (view === "beach") {
         title.textContent = "Hotelové karty 4*+ pri pláži, bez AI/UAI ceny";
         subtitle.textContent = "Graf ukazuje lacné zachytené hotelové varianty. Nie sú to ceny s All inclusive/Ultra all inclusive.";
@@ -495,12 +577,12 @@ def build_html(destination_summary, hotel_rows):
 
       if (view === "comparison") {
         title.textContent = "Ako ďaleko je 1 600 € od historických cien";
-        subtitle.textContent = "Porovnanie voči najbližším dostupným 4*+ hotelovým kartám pri pláži.";
-        const rows = filteredHotels().filter(h => h.isBeach4Star);
+        subtitle.textContent = "Porovnanie voči historickým AI/UAI balíkom z Invia.sk a Fischer.sk.";
+        const rows = filteredAiPackages();
         const markers = [
-          { label: "Min 4*+ pláž 0 m", value: Math.min(...rows.map(h => h.price), reference.price) },
-          { label: "Medián 4*+ pláž 0 m", value: median(rows.map(h => h.price)) || 0 },
-          { label: "Max 4*+ pláž 0 m", value: Math.max(...rows.map(h => h.price), 0) },
+          { label: "Min AI/UAI 2025", value: Math.min(...rows.map(p => p.price), reference.price) },
+          { label: "Medián AI/UAI 2025", value: median(rows.map(p => p.price)) || 0 },
+          { label: "Max AI/UAI 2025", value: Math.max(...rows.map(p => p.price), 0) },
           { label: reference.label, value: reference.price, ref: true },
           { label: "Cena na 7 nocí v 2026", value: reference.price, ref: true }
         ];
@@ -529,18 +611,43 @@ def build_html(destination_summary, hotel_rows):
     }
 
     function renderInsights() {
-      const beachRows = filteredHotels().filter(h => h.isBeach4Star);
-      const prices = beachRows.map(h => h.price);
+      const aiRows = filteredAiPackages();
+      const prices = aiRows.map(p => p.price);
       const med = median(prices);
       const min = prices.length ? Math.min(...prices) : null;
       const max = prices.length ? Math.max(...prices) : null;
       document.getElementById("insightMain").innerHTML = med
-        ? `Referencia 2026 je <b>${euro.format(reference.price - med)}</b> nad mediánom dostupných 4*+ hotelových kariet pri pláži (${euro.format(med)}).`
-        : "Pre aktuálny filter nie je dostupný hotelový medián.";
+        ? `Referencia 2026 je <b>${euro.format(reference.price - med)}</b> oproti mediánu historických AI/UAI balíkov (${euro.format(med)}).`
+        : "Pre aktuálny filter nie je dostupný AI/UAI medián.";
       document.getElementById("insightSecond").innerHTML = min
-        ? `Rozpätie hotelových kariet pri pláži: <b>${euro.format(min)} až ${euro.format(max)}</b>.`
-        : "Zmeň filter destinácie alebo cenu, ak chceš vidieť hotelové rozpätie.";
+        ? `Rozpätie historických AI/UAI balíkov: <b>${euro.format(min)} až ${euro.format(max)}</b>.`
+        : "Zmeň filter destinácie alebo cenu, ak chceš vidieť AI/UAI rozpätie.";
       document.getElementById("insightThird").innerHTML = `Prepočet referencie: <b>${euro.format(reference.perNight)}</b> za noc alebo <b>${euro.format(reference.perFullDay)}</b> za plný deň.`;
+    }
+
+    function renderAiTable() {
+      const rows = filteredAiPackages();
+      const target = document.getElementById("aiTable");
+      if (!rows.length) {
+        target.innerHTML = '<div class="empty">Žiadne AI/UAI balíky pre aktuálny filter.</div>';
+        return;
+      }
+      target.innerHTML = `
+        <table>
+          <thead><tr><th>Hotel</th><th>Cena</th><th>€/noc</th><th>Noci</th><th>Strava</th><th>Dest.</th><th>Zdroj</th></tr></thead>
+          <tbody>
+            ${rows.map(p => `<tr>
+              <td>${p.hotel}</td>
+              <td>${euro.format(p.price)}</td>
+              <td>${euro.format(p.perNight)}</td>
+              <td>${p.nights}</td>
+              <td>${p.meal}</td>
+              <td>${p.destination}</td>
+              <td><a href="${p.archive}" target="_blank" rel="noreferrer">${p.source.replace(" Wayback", "")}</a></td>
+            </tr>`).join("")}
+          </tbody>
+        </table>
+      `;
     }
 
     function renderHotelTable() {
@@ -613,6 +720,7 @@ def build_html(destination_summary, hotel_rows):
       document.getElementById("maxPriceLabel").textContent = `do ${euro.format(Number(document.getElementById("maxPrice").value))}`;
       renderChart();
       renderInsights();
+      renderAiTable();
       renderHotelTable();
       renderDestinationTable();
     }
@@ -633,6 +741,8 @@ def build_html(destination_summary, hotel_rows):
         template
         .replace("__DESTINATION_JSON__", json.dumps(destination_summary, ensure_ascii=False))
         .replace("__HOTEL_JSON__", json.dumps(hotel_rows, ensure_ascii=False))
+        .replace("__AI_JSON__", json.dumps(ai_packages, ensure_ascii=False))
+        .replace("__AI_SUMMARY_JSON__", json.dumps(ai_summary, ensure_ascii=False))
         .replace("__REFERENCE_JSON__", json.dumps(reference, ensure_ascii=False))
         .replace("__STATS_JSON__", json.dumps(stats, ensure_ascii=False))
     )
@@ -641,9 +751,12 @@ def build_html(destination_summary, hotel_rows):
 def main():
     destination_rows = read_csv(DESTINATION_CSV)
     hotel_rows = read_csv(HOTEL_CSV)
+    ai_rows = read_csv(AI_CSV)
     destination_summary = summarize_destinations(destination_rows)
     hotels = prepare_hotels(hotel_rows)
-    OUT_HTML.write_text(build_html(destination_summary, hotels), encoding="utf-8")
+    ai_packages = prepare_ai_packages(ai_rows)
+    ai_summary = summarize_ai_packages(ai_packages)
+    OUT_HTML.write_text(build_html(destination_summary, hotels, ai_packages, ai_summary), encoding="utf-8")
     print(f"created {OUT_HTML}")
 
 

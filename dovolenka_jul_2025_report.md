@@ -4,8 +4,7 @@ Zdrojom sú archívne zachytenia Dovolenka.SME.sk cez Internet Archive. Ceny sú
 
 ## Metodika
 
-- Snapshoty pre destinácie: `2025-07-10` (`20250710064927`), `2025-07-30` (`20250730145258`).
-- Hotelové stránky: `2025-07-10` https://dovolenka.sme.sk/last-minute/turecko/antalya, `2025-07-30` https://dovolenka.sme.sk/last-minute/turecko, `2025-07-30` https://dovolenka.sme.sk/last-minute/grecko, `2025-07-05` https://dovolenka.sme.sk/last-minute/grecko/kos, `2025-07-17` https://dovolenka.sme.sk/last-minute/grecko/zakynthos/laganas, `2025-07-17` https://dovolenka.sme.sk/last-minute/grecko/zakynthos/tsilivi.
+- Snapshoty: `2025-07-10` (`20250710064927`), `2025-07-30` (`20250730145258`).
 - Vynechané destinácie: Tunisko, Egypt, Albánsko, Čierna Hora.
 - Hotel je plne overený iba vtedy, keď archívny zdroj priamo potvrdil 4*+, AI/UAI, pláž 0 m a bazén.
 - Keď karta potvrdila 4*+, AI/UAI a pláž 0 m, ale nie bazén, hotel je uvedený len ako kandidát bez plného overenia.
@@ -14,59 +13,29 @@ Zdrojom sú archívne zachytenia Dovolenka.SME.sk cez Internet Archive. Ceny sú
 
 V dostupných júlových archívoch sa nenašiel žiadny hotelový riadok, ktorý by priamo v archívnom zdroji potvrdil všetky štyri kritériá vrátane bazéna.
 Našlo sa 0 kandidátov, kde karta potvrdzuje 4*+, AI/UAI a pláž 0 m, ale bazén nie je v archívnej karte potvrdený.
-Doplnkovo je v CSV 34 hotelových kariet so 4*+ a plážou 0 m, ale bez archívne overenej AI/UAI stravy.
+
+## Doplnený historický AI/UAI prehľad z iných zdrojov
+
+Pretože hotelové karty z Dovolenka.SME.sk neukazovali AI/UAI cenu, bol doplnený samostatný dataset z archívov Invia.sk a Fischer.sk. Zaradené sú iba letecké balíky s odchodom v júli 2025, stravou All inclusive alebo Ultra All inclusive a cenou za osobu zachytenou v archívnej URL alebo stránke. Vynechané zostali Tunisko, Egypt, Albánsko a Čierna Hora.
+
+| destination | count | min | median | max |
+| --- | --- | --- | --- | --- |
+| arabske-emiraty | 2 | 2016 | 2016 | 2026 |
+| bahrajn | 1 | 1293 | 1293 | 1293 |
+| bulharsko | 7 | 1002 | 1355 | 1911 |
+| cyprus | 1 | 1307 | 1307 | 1307 |
+| kanarske-ostrovy | 1 | 2383 | 2383 | 2383 |
+| kuba | 1 | 2230 | 2230 | 2230 |
+| spanielsko | 1 | 2159 | 2159 | 2159 |
+| turecko | 6 | 778 | 1143 | 2408 |
+
+Poznámka ku kvalite: `mealId=11` z Invia bolo overené vzorkou stránky ako Ultra All inclusive. `mealId=5` je označené ako All inclusive s nižšou istotou, pretože vzorová stránka obsahovala opis All Inclusive, ale nie vždy samostatné `mealName`. Fischer riadky majú vyššiu istotu, pretože URL obsahuje `DI=AI`, hviezdičky `MT=5` a cenu v parametri `PC`.
 
 ## Kandidáti hotelov
 _Žiadne riadky._
 
 ## Súhrn kandidátov podľa destinácie
 _Žiadne riadky._
-
-## Doplnkové hotelové karty: 4*+ a pláž 0 m, bez overenej AI/UAI
-
-Tieto hotely nespĺňajú prísny filter, pretože archívna karta neuvádza All inclusive/Ultra all inclusive. Sú uvedené len ako orientačné cenové pásmo pre hotely pri pláži.
-
-| snapshot_date | destination_slug | region_slug | hotel | price_from_eur | stars | food | beach | source_page |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2025-07-10 | turecko | antalya | Citrus Park Hotel | 389 | 4.5 | Bez stravy | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Leaf Port Boutique Hotel | 396 | 4.5 | Raňajky | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Hotel Santamarina | 401 | 4.5 | Raňajky | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Falcon 1511 | 407 | 4.5 | Raňajky | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Deluxe Ersoy Hotel | 420 | 4.5 | Bez stravy | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Lara Dinc Hotel | 422 | 4.5 | Raňajky | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Pacco Boutique Hotel | 423 | 4.5 | Raňajky | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Riviera Zen Hotel | 514 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Antique Roman Palace Museum Hotel | 570 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | White City Beach Hotel | 583 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Adalya Elite Lara | 642 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Akra Kemer | 669 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Fame Residence Lara & Spa | 678 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Titanic Deluxe Lara | 687 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Commodore Elite Suites & Spa | 689 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Melas Lara Hotel | 707 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Turunç Resort | 708 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Adam & Eve Hotel | 754 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Barut Hemera | 802 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Royal Holiday Palace | 837 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Adalya Resort & Spa Adults Only | 842 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Delphin Be Grand Resort | 899 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Acanthus Cennet Barut Collection | 901 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Cornelia Diamond Golf Resort & Spa | 908 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Delphin Imperial Hotel | 909 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Akra Sorgun Tui Blue Sensatori | 959 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Rixos Premium Tekirova | 964 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Ic Hotels Green Palace | 995 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Rixos Premium Belek | 1119 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Trendy Side Beach | 1138 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Delphin Palace | 1355 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Gloria Serenity Resort | 1495 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Maxx Royal Belek Golf Resort | 1658 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-| 2025-07-10 | turecko | antalya | Regnum Carya | 1826 | 4.5 | --- | 0 m | https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya |
-
-## Súhrn doplnkových hotelových kariet
-| destination_slug | count | min | median | max |
-| --- | --- | --- | --- | --- |
-| turecko | 34 | 389 | 731.0 | 1826 |
 
 ## Slabšie ceny `od` podľa destinácie
 Tieto riadky sú ceny na úrovni destinácie, nie hotelovo overené ceny.
@@ -91,6 +60,7 @@ Tieto riadky sú ceny na úrovni destinácie, nie hotelovo overené ceny.
 
 - `dovolenka_jul_2025_destination_prices.csv`: ceny `od` na úrovni destinácií.
 - `dovolenka_jul_2025_hotel_candidates.csv`: všetky extrahované hotelové karty vrátane overovacích flagov.
+- `historical_all_inclusive_packages_july_2025.csv`: doplnené historické AI/UAI letecké balíky z Invia.sk a Fischer.sk.
 
 ## Chyby pri načítaní
 
@@ -98,4 +68,23 @@ Niektoré archívne URL nebolo možné načítať; tieto riadky neboli použité
 
 | snapshot | page | error |
 | --- | --- | --- |
-| 20250730145258 | https://dovolenka.sme.sk/last-minute/grecko | Failed to fetch https://web.archive.org/web/20250730145258id_/https://dovolenka.sme.sk/last-minute/grecko: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/bulharsko/zlate-piesky | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/bulharsko/zlate-piesky: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/chorvatsko/2 | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/chorvatsko/2: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/chorvatsko/kvarner | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/chorvatsko/kvarner: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/chorvatsko/pag | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/chorvatsko/pag: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/dominikanska-republika/2 | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/dominikanska-republika/2: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/dominikanska-republika/polostrov-samana | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/dominikanska-republika/polostrov-samana: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/grecko/astypalaia | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/grecko/astypalaia: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/grecko/chalkidiki | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/grecko/chalkidiki: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/grecko/kea | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/grecko/kea: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/grecko/kefalonia | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/grecko/kefalonia: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/grecko/kimolos | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/grecko/kimolos: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/grecko/kreta | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/grecko/kreta: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/grecko/lefkada | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/grecko/lefkada: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/grecko/milos | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/grecko/milos: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/grecko/mykonos | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/grecko/mykonos: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/grecko/pilion | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/grecko/pilion: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/grecko/samos | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/grecko/samos: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/grecko/sifnos | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/grecko/sifnos: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/grecko/skiathos | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/grecko/skiathos: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
+| 20250710064927 | https://dovolenka.sme.sk/last-minute/grecko/syros | Failed to fetch https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/grecko/syros: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it> |
