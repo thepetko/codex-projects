@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dovolenka.SME.sk - júl 2025 vs referencia 2026</title>
+  <style>
+    :root {
+      --bg: #f6f7f2;
+      --panel: #ffffff;
+      --ink: #18201b;
+      --muted: #667166;
+      --line: #dfe4da;
+      --green: #1f7a5a;
+      --blue: #2f6fb0;
+      --gold: #ba7b19;
+      --red: #b34848;
+      --shadow: 0 18px 42px rgba(24, 32, 27, 0.09);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    header {
+      padding: 28px 32px 18px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+    .subtitle {
+      color: var(--muted);
+      max-width: 980px;
+      line-height: 1.45;
+    }
+    main { padding: 24px 32px 40px; }
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .control {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    select, input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      min-height: 36px;
+      padding: 6px 8px;
+      color: var(--ink);
+      background: #fff;
+      font: inherit;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+      gap: 18px;
+      align-items: start;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    .panel h2 {
+      margin: 0 0 4px;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+    .panel p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .kpi {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .kpi .value {
+      font-size: 24px;
+      font-weight: 750;
+      margin-bottom: 3px;
+    }
+    .kpi .label {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .chart {
+      display: grid;
+      gap: 10px;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 150px minmax(180px, 1fr) 70px;
+      gap: 10px;
+      align-items: center;
+      min-height: 30px;
+    }
+    .bar-label {
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .bar-track {
+      height: 18px;
+      background: #eef1ea;
+      border-radius: 5px;
+      position: relative;
+      overflow: hidden;
+    }
+    .bar {
+      height: 100%;
+      border-radius: 5px;
+      background: var(--blue);
+      min-width: 2px;
+      transition: width .2s ease;
+    }
+    .bar.ref {
+      background: var(--gold);
+    }
+    .bar-value {
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+      font-size: 13px;
+    }
+    .reference-card {
+      border: 1px solid #ead6ad;
+      background: #fff8e9;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+    .reference-card strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .tagline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .tag {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 8px;
+      font-size: 12px;
+      color: var(--muted);
+      background: #fff;
+    }
+    .insight {
+      padding: 12px 0;
+      border-top: 1px solid var(--line);
+      line-height: 1.45;
+    }
+    .insight:first-of-type { border-top: 0; }
+    .insight b { color: var(--ink); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+    tbody tr:hover { background: #f8faf5; }
+    .small-note {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .empty {
+      color: var(--muted);
+      padding: 20px;
+      text-align: center;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+    }
+    @media (max-width: 980px) {
+      header, main { padding-left: 16px; padding-right: 16px; }
+      .controls, .grid, .split, .kpis { grid-template-columns: 1fr; }
+      .bar-row { grid-template-columns: 105px minmax(120px, 1fr) 62px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Last minute ceny: júl 2025 vs referenčná dovolenka 2026</h1>
+    <div class="subtitle">Interaktívne porovnanie historických archívnych cien z Dovolenka.SME.sk. Prísny filter 4*+, AI/UAI, hotelová pláž a bazén sa z archívnych kariet nepodarilo kompletne potvrdiť, preto dashboard oddeľuje destinácie, hotelové karty pri pláži a referenciu 2026.</div>
+  </header>
+  <main>
+    <section class="kpis">
+      <div class="kpi"><div class="value" id="kpiDestinations"></div><div class="label">destinácií v archívnom porovnaní</div></div>
+      <div class="kpi"><div class="value" id="kpiHotels"></div><div class="label">extrahovaných hotelových kariet</div></div>
+      <div class="kpi"><div class="value" id="kpiBeach"></div><div class="label">4*+ hotelových kariet s plážou 0 m</div></div>
+      <div class="kpi"><div class="value">1 600 €</div><div class="label">referencia júl 2026, 5*, UAI, 7 nocí</div></div>
+    </section>
+
+    <section class="controls">
+      <div class="control">
+        <label for="viewSelect">Zobrazenie</label>
+        <select id="viewSelect">
+          <option value="destination">Destinácie 2025: medián ceny od</option>
+          <option value="beach">Hotely 4*+ pri pláži 2025</option>
+          <option value="comparison">Porovnanie s 2026 referenciou</option>
+        </select>
+      </div>
+      <div class="control">
+        <label for="destinationFilter">Destinácia hotelov</label>
+        <select id="destinationFilter"></select>
+      </div>
+      <div class="control">
+        <label for="maxPrice">Max cena hotela</label>
+        <input id="maxPrice" type="range" min="300" max="1900" value="1900" step="50">
+        <div class="small-note" id="maxPriceLabel"></div>
+      </div>
+      <div class="control">
+        <label for="searchInput">Hľadať hotel</label>
+        <input id="searchInput" type="search" placeholder="napr. Rixos, Lara, Barut">
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="panel">
+        <h2 id="chartTitle"></h2>
+        <p id="chartSubtitle"></p>
+        <div class="chart" id="chart"></div>
+      </div>
+
+      <aside class="panel">
+        <div class="reference-card">
+          <strong>Referencia 2026: 1 600 €</strong>
+          <div>7 nocí: <b>228,57 €/noc</b></div>
+          <div>5 plných dní: <b>320 €/deň</b></div>
+          <div class="tagline">
+            <span class="tag">5*</span>
+            <span class="tag">Ultra all inclusive</span>
+            <span class="tag">pláž cca do 200 m</span>
+          </div>
+        </div>
+        <div class="insight" id="insightMain"></div>
+        <div class="insight" id="insightSecond"></div>
+        <div class="insight" id="insightThird"></div>
+        <div class="small-note">Historické ceny sú archívne ceny “od”, pravdepodobne na osobu. Referencia 2026 je vložená ako porovnávací bod, nie ako historická ponuka.</div>
+      </aside>
+    </section>
+
+    <section class="split">
+      <div class="panel">
+        <h2>Hotelové karty</h2>
+        <p>Filtrované podľa ovládacích prvkov vyššie. Kliknutím na hlavičku zoradíš tabuľku.</p>
+        <div id="hotelTable"></div>
+      </div>
+      <div class="panel">
+        <h2>Destinačný súhrn</h2>
+        <p>Slabšie, ale širšie porovnanie cien “od” na úrovni destinácií.</p>
+        <div id="destinationTable"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const destinationSummary = [{"slug": "turecko", "destination": "Turecko", "count": 2, "min": 245, "median": 246.0, "max": 247, "range": 2}, {"slug": "bulharsko", "destination": "Bulharsko", "count": 2, "min": 304, "median": 307.0, "max": 310, "range": 6}, {"slug": "spanielsko", "destination": "Španielsko", "count": 2, "min": 341, "median": 347.0, "max": 353, "range": 12}, {"slug": "grecko", "destination": "Grécko", "count": 2, "min": 335, "median": 357.0, "max": 379, "range": 44}, {"slug": "cyprus", "destination": "Cyprus", "count": 2, "min": 447, "median": 449.5, "max": 452, "range": 5}, {"slug": "chorvatsko", "destination": "Chorvátsko", "count": 2, "min": 450, "median": 450.0, "max": 450, "range": 0}, {"slug": "spojene-arabske-emiraty", "destination": "Spojené arabské emiráty", "count": 2, "min": 390, "median": 465.0, "max": 540, "range": 150}, {"slug": "kanarske-ostrovy", "destination": "Kanárske ostrovy", "count": 2, "min": 466, "median": 482.5, "max": 499, "range": 33}, {"slug": "portugalsko", "destination": "Portugalsko", "count": 2, "min": 468, "median": 482.5, "max": 497, "range": 29}, {"slug": "taliansko", "destination": "Taliansko", "count": 2, "min": 491, "median": 494.0, "max": 497, "range": 6}, {"slug": "thajsko", "destination": "Thajsko", "count": 2, "min": 742, "median": 743.5, "max": 745, "range": 3}, {"slug": "dominikanska-republika", "destination": "Dominikánska republika", "count": 2, "min": 977, "median": 982.0, "max": 987, "range": 10}, {"slug": "maledivy", "destination": "Maldivy / Maledivy", "count": 2, "min": 1048, "median": 1058.5, "max": 1069, "range": 21}];
+    const hotels = [{"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Nest Hotel", "price": 313, "stars": "4.5", "food": "Bez stravy", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/gvar-apart-otel#trt=p&minPrice=313&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=1", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Mori Club Hotel", "price": 316, "stars": "4.5", "food": "Bez stravy", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/mori-club-hotel#trt=p&minPrice=316&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=2", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Argos Hotel", "price": 334, "stars": "4.5", "food": "Bez stravy", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/argos#trt=p&minPrice=334&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=3", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Enda Lara Hotel", "price": 351, "stars": "4.5", "food": "Bez stravy", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/enda-lara-hotel#trt=p&minPrice=351&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=4", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Triana", "price": 363, "stars": "4.5", "food": "Raňajky", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/triana#trt=p&minPrice=363&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=5", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Lara Garden Butik Hotel", "price": 370, "stars": "4.5", "food": "Raňajky", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/lara-garden-butik-hotel#trt=p&minPrice=370&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=6", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Mediterra Art Hotel", "price": 375, "stars": "4.5", "food": "Raňajky", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/mediterra-art#trt=p&minPrice=375&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=7", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Aspen Hotel", "price": 376, "stars": "4.5", "food": "Bez stravy", "beach": "200 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/aspen#trt=p&minPrice=376&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=8", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Wise Hotel & Spa", "price": 377, "stars": "4.5", "food": "Bez stravy", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/wise-boutique-hotel-spa#trt=p&minPrice=377&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=9", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Alp Pasa Hotel", "price": 381, "stars": "4.5", "food": "Raňajky", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/alp-pasa#trt=p&minPrice=381&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=10", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Citrus Park Hotel", "price": 389, "stars": "4.5", "food": "Bez stravy", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/citrus-park-hotel#trt=p&minPrice=389&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=11", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Cender Hotel", "price": 392, "stars": "4.5", "food": "Raňajky", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/cender#trt=p&minPrice=392&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=12", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Castle Old Town Hotel", "price": 394, "stars": "4.5", "food": "Raňajky", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/castle-boutique#trt=p&minPrice=394&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=14", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Niss Lara Hotel", "price": 394, "stars": "4.5", "food": "Raňajky", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/seven-stars-exclusive#trt=p&minPrice=394&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=13", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Leaf Port Boutique Hotel", "price": 396, "stars": "4.5", "food": "Raňajky", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/leaf-port-boutique-hotel#trt=p&minPrice=396&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=15", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Hotel Santamarina", "price": 401, "stars": "4.5", "food": "Raňajky", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/hotel-santa-marina#trt=p&minPrice=401&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=16", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Falcon 1511", "price": 407, "stars": "4.5", "food": "Raňajky", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/falcon-1511#trt=p&minPrice=407&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=18", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Karyatit Hotel", "price": 407, "stars": "4.5", "food": "Bez stravy", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/karyatit#trt=p&minPrice=407&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=17", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Business Hotel Antalya", "price": 412, "stars": "4.5", "food": "Bez stravy", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/business-hotel-antalya#trt=p&minPrice=412&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=19", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Güden Pearl", "price": 414, "stars": "4.5", "food": "Bez stravy", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/guden-pearl-apart-hotel#trt=p&minPrice=414&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=20", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Start Otel", "price": 416, "stars": "4.5", "food": "Raňajky", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/start-hotel#trt=p&minPrice=416&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=21", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Deluxe Ersoy Hotel", "price": 420, "stars": "4.5", "food": "Bez stravy", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/dimo-hotel-antalya#trt=p&minPrice=420&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=22", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Lara Dinc Hotel", "price": 422, "stars": "4.5", "food": "Raňajky", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/lara-dinc-hotel#trt=p&minPrice=422&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=23", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Pacco Boutique Hotel", "price": 423, "stars": "4.5", "food": "Raňajky", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/pacco-boutique-hotel-spa#trt=p&minPrice=423&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=24", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Golden Orange", "price": 431, "stars": "4.5", "food": "Raňajky", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/golden-orange-hotel#trt=p&minPrice=431&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=26", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "La Paloma Hotel", "price": 431, "stars": "4.5", "food": "Raňajky", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/la-paloma-boutique-hotel#trt=p&minPrice=431&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=25", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Latanya Palm Hotel", "price": 439, "stars": "4.5", "food": "Raňajky", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/latanya-palm-hotel#trt=p&minPrice=439&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=27", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Hane Family Resort", "price": 447, "stars": "4.5", "food": "---", "beach": "400 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/side/hotel-hane-family", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Elips Royal Hotel & Spa", "price": 449, "stars": "4.5", "food": "Raňajky", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/elips-royal-hotel-spa#trt=p&minPrice=449&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=28", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Sky Kamer Hotel", "price": 450, "stars": "4.5", "food": "Raňajky", "beach": "- - -", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/sky-kamer-boutique-hotel#trt=p&minPrice=450&svk_cnt_hotel_shw_total=0&ger_cnt_hotel_shw_total=29", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Alaiye Resort & Spa Hotel", "price": 484, "stars": "4.5", "food": "---", "beach": "120 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/alanya/hotel-alaiye-resort-spa", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Riviera Zen Hotel", "price": 514, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/alanya/hotel-sara", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Diamond Elite Hotel & Spa", "price": 520, "stars": "4.5", "food": "---", "beach": "350 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/side/hotel-diamond-elite-hotel-spa", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Antique Roman Palace Museum Hotel", "price": 570, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/alanya/hotel-antique-roman-palace", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "White City Beach Hotel", "price": 583, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/alanya/hotel-white-city-beach", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Aska Lara Resort & Spa", "price": 605, "stars": "4.5", "food": "---", "beach": "350 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/aska-lara-deluxe", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Amara Family Resort", "price": 629, "stars": "4.5", "food": "---", "beach": "250 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/side/hotel-saray-regency-resort-spa", "isBeach4Star": false, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Adalya Elite Lara", "price": 642, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/adalya-elite-lara", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Akra Kemer", "price": 669, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/kemer/hotel-kemer-resort", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Fame Residence Lara & Spa", "price": 678, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/hotel-fame-residence-lara-resort", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Titanic Deluxe Lara", "price": 687, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/hotel-titanic-beach-resort", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Commodore Elite Suites & Spa", "price": 689, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/side/hotel-commodore-elite-suites-spa", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Melas Lara Hotel", "price": 707, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/melas-lara-resort", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Turunç Resort", "price": 708, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/egejska-riviera/hotel-turunc", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Adam & Eve Hotel", "price": 754, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/belek/hotel-royal-adam-eve", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Barut Hemera", "price": 802, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/side/hotel-barut-hemera-resort-spa", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Royal Holiday Palace", "price": 837, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/hotel-royal-holiday-palace", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Adalya Resort & Spa Adults Only", "price": 842, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/side/hotel-adalya-resort", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Delphin Be Grand Resort", "price": 899, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/hotel-rixos-lares", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Acanthus Cennet Barut Collection", "price": 901, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/side/hotel-barut-cennet-acanthus", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Cornelia Diamond Golf Resort & Spa", "price": 908, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/belek/hotel-cornelia-diamond-golf-resort", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Delphin Imperial Hotel", "price": 909, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/hotel-delhin-imperial", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Akra Sorgun Tui Blue Sensatori", "price": 959, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/side/barut-sorgun-sensatori", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Rixos Premium Tekirova", "price": 964, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/kemer/hotel-rixos-tekirova", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Ic Hotels Green Palace", "price": 995, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/hotel-ic-green-palace", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Rixos Premium Belek", "price": 1119, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/belek/hotel-rixos-premium-belek", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Trendy Side Beach", "price": 1138, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/side/trendy-hotel-side-beach", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Delphin Palace", "price": 1355, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/antalya/hotel-delphin-palace", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Gloria Serenity Resort", "price": 1495, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/belek/hotel-gloria-serenity-resort", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Maxx Royal Belek Golf Resort", "price": 1658, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/belek/hotel-maxx-royal-belek-golf-spa", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}, {"date": "2025-07-10", "destination": "turecko", "region": "antalya", "hotel": "Regnum Carya", "price": 1826, "stars": "4.5", "food": "---", "beach": "0 m", "source": "https://web.archive.org/web/20250710064927id_/https://dovolenka.sme.sk/last-minute/turecko/antalya", "hotel_url": "https://dovolenka.sme.sk/h/turecko/belek/hotel-regnum-carya-golf", "isBeach4Star": true, "isVerifiedAllInclusive": false, "isPoolVerified": false}];
+    const reference = {"label": "Júl 2026 referencia", "price": 1600, "nights": 7, "fullDays": 5, "stars": "5*", "food": "Ultra all inclusive", "beach": "hotelová pláž cca do 200 m", "perNight": 228.57, "perFullDay": 320.0};
+    const stats = {"destinationCount": 13, "hotelCount": 61, "beachHotelCount": 34, "beachMin": 389, "beachMedian": 731.0, "beachMax": 1826};
+    let hotelSort = { key: "price", direction: "asc" };
+
+    const euro = new Intl.NumberFormat("sk-SK", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+
+    function percent(value, max) {
+      return max ? Math.max(1, Math.round((value / max) * 100)) : 0;
+    }
+
+    function uniqueDestinations() {
+      return [...new Set(hotels.map(h => h.destination))].sort();
+    }
+
+    function populateFilters() {
+      const select = document.getElementById("destinationFilter");
+      select.innerHTML = '<option value="all">Všetky dostupné</option>' + uniqueDestinations().map(d => `<option value="${d}">${d}</option>`).join("");
+      document.getElementById("kpiDestinations").textContent = stats.destinationCount;
+      document.getElementById("kpiHotels").textContent = stats.hotelCount;
+      document.getElementById("kpiBeach").textContent = stats.beachHotelCount;
+    }
+
+    function filteredHotels() {
+      const dest = document.getElementById("destinationFilter").value;
+      const maxPrice = Number(document.getElementById("maxPrice").value);
+      const term = document.getElementById("searchInput").value.trim().toLowerCase();
+      return hotels.filter(h => {
+        if (dest !== "all" && h.destination !== dest) return false;
+        if (h.price > maxPrice) return false;
+        if (term && !h.hotel.toLowerCase().includes(term)) return false;
+        return true;
+      });
+    }
+
+    function renderChart() {
+      const view = document.getElementById("viewSelect").value;
+      const chart = document.getElementById("chart");
+      const title = document.getElementById("chartTitle");
+      const subtitle = document.getElementById("chartSubtitle");
+      chart.innerHTML = "";
+
+      if (view === "destination") {
+        title.textContent = "Destinácie: medián archívnej ceny “od”";
+        subtitle.textContent = "Ceny sú z dvoch júlových snapshotov, bez hotelového overenia parametrov.";
+        const max = Math.max(reference.price, ...destinationSummary.map(d => d.median));
+        destinationSummary.forEach(d => chart.appendChild(barRow(d.destination, d.median, max, "bar", `${euro.format(d.min)} až ${euro.format(d.max)}`)));
+        chart.appendChild(barRow(reference.label, reference.price, max, "bar ref", "vložený porovnávací bod"));
+      }
+
+      if (view === "beach") {
+        title.textContent = "Hotelové karty 4*+ s plážou 0 m";
+        subtitle.textContent = "Tieto riadky nemajú v archívnej karte potvrdené AI/UAI ani bazén.";
+        const rows = filteredHotels().filter(h => h.isBeach4Star);
+        const max = Math.max(reference.price, ...rows.map(h => h.price), 1);
+        if (!rows.length) chart.innerHTML = '<div class="empty">Pre aktuálne filtre nie sú dostupné hotelové karty.</div>';
+        rows.forEach(h => chart.appendChild(barRow(h.hotel, h.price, max, "bar", `${h.destination}, ${h.region}, ${h.stars}*, pláž ${h.beach}`)));
+        chart.appendChild(barRow(reference.label, reference.price, max, "bar ref", "5*, UAI, pláž do 200 m"));
+      }
+
+      if (view === "comparison") {
+        title.textContent = "Ako ďaleko je 1 600 € od historických cien";
+        subtitle.textContent = "Porovnanie voči najbližším dostupným 4*+ hotelovým kartám pri pláži.";
+        const rows = filteredHotels().filter(h => h.isBeach4Star);
+        const markers = [
+          { label: "Min 4*+ pláž 0 m", value: Math.min(...rows.map(h => h.price), reference.price) },
+          { label: "Medián 4*+ pláž 0 m", value: median(rows.map(h => h.price)) || 0 },
+          { label: "Max 4*+ pláž 0 m", value: Math.max(...rows.map(h => h.price), 0) },
+          { label: reference.label, value: reference.price, ref: true },
+          { label: "Cena na 7 nocí v 2026", value: reference.price, ref: true }
+        ];
+        const max = Math.max(...markers.map(m => m.value), 1);
+        markers.forEach(m => chart.appendChild(barRow(m.label, m.value, max, m.ref ? "bar ref" : "bar", "")));
+      }
+    }
+
+    function median(values) {
+      const nums = values.filter(v => Number.isFinite(v)).sort((a, b) => a - b);
+      if (!nums.length) return null;
+      const mid = Math.floor(nums.length / 2);
+      return nums.length % 2 ? nums[mid] : Math.round((nums[mid - 1] + nums[mid]) / 2);
+    }
+
+    function barRow(label, value, max, cls, detail) {
+      const row = document.createElement("div");
+      row.className = "bar-row";
+      row.title = detail ? `${label}: ${euro.format(value)} (${detail})` : `${label}: ${euro.format(value)}`;
+      row.innerHTML = `
+        <div class="bar-label">${label}</div>
+        <div class="bar-track"><div class="${cls}" style="width:${percent(value, max)}%"></div></div>
+        <div class="bar-value">${euro.format(value)}</div>
+      `;
+      return row;
+    }
+
+    function renderInsights() {
+      const beachRows = filteredHotels().filter(h => h.isBeach4Star);
+      const prices = beachRows.map(h => h.price);
+      const med = median(prices);
+      const min = prices.length ? Math.min(...prices) : null;
+      const max = prices.length ? Math.max(...prices) : null;
+      document.getElementById("insightMain").innerHTML = med
+        ? `Referencia 2026 je <b>${euro.format(reference.price - med)}</b> nad mediánom dostupných 4*+ hotelových kariet pri pláži (${euro.format(med)}).`
+        : "Pre aktuálny filter nie je dostupný hotelový medián.";
+      document.getElementById("insightSecond").innerHTML = min
+        ? `Rozpätie hotelových kariet pri pláži: <b>${euro.format(min)} až ${euro.format(max)}</b>.`
+        : "Zmeň filter destinácie alebo cenu, ak chceš vidieť hotelové rozpätie.";
+      document.getElementById("insightThird").innerHTML = `Prepočet referencie: <b>${euro.format(reference.perNight)}</b> za noc alebo <b>${euro.format(reference.perFullDay)}</b> za plný deň.`;
+    }
+
+    function renderHotelTable() {
+      const rows = filteredHotels().slice().sort((a, b) => {
+        const key = hotelSort.key;
+        const av = a[key];
+        const bv = b[key];
+        const result = typeof av === "number" ? av - bv : String(av).localeCompare(String(bv), "sk");
+        return hotelSort.direction === "asc" ? result : -result;
+      });
+      const target = document.getElementById("hotelTable");
+      if (!rows.length) {
+        target.innerHTML = '<div class="empty">Žiadne hotely pre aktuálny filter.</div>';
+        return;
+      }
+      target.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th data-key="hotel">Hotel</th>
+              <th data-key="price">Cena</th>
+              <th data-key="stars">Hviezdy</th>
+              <th data-key="food">Strava</th>
+              <th data-key="beach">Pláž</th>
+              <th data-key="destination">Dest.</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map(h => `<tr>
+              <td>${h.hotel}</td>
+              <td>${euro.format(h.price)}</td>
+              <td>${h.stars}</td>
+              <td>${h.food}</td>
+              <td>${h.beach}</td>
+              <td>${h.destination}</td>
+            </tr>`).join("")}
+          </tbody>
+        </table>
+      `;
+      target.querySelectorAll("th").forEach(th => {
+        th.addEventListener("click", () => {
+          const key = th.dataset.key;
+          hotelSort = {
+            key,
+            direction: hotelSort.key === key && hotelSort.direction === "asc" ? "desc" : "asc"
+          };
+          renderAll();
+        });
+      });
+    }
+
+    function renderDestinationTable() {
+      const target = document.getElementById("destinationTable");
+      target.innerHTML = `
+        <table>
+          <thead><tr><th>Destinácia</th><th>Min</th><th>Medián</th><th>Max</th></tr></thead>
+          <tbody>
+            ${destinationSummary.map(d => `<tr>
+              <td>${d.destination}</td>
+              <td>${euro.format(d.min)}</td>
+              <td>${euro.format(d.median)}</td>
+              <td>${euro.format(d.max)}</td>
+            </tr>`).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function renderAll() {
+      document.getElementById("maxPriceLabel").textContent = `do ${euro.format(Number(document.getElementById("maxPrice").value))}`;
+      renderChart();
+      renderInsights();
+      renderHotelTable();
+      renderDestinationTable();
+    }
+
+    ["viewSelect", "destinationFilter", "maxPrice", "searchInput"].forEach(id => {
+      document.getElementById(id).addEventListener("input", renderAll);
+      document.getElementById(id).addEventListener("change", renderAll);
+    });
+
+    populateFilters();
+    renderAll();
+  </script>
+</body>
+</html>
